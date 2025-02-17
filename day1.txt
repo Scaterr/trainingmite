@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+// Function to get customer details
+void getCustomerDetails(char name[], int *id, float *units) {
+    printf("Name: ");
+    scanf("%s", name);
+    printf("ID: ");
+    scanf("%d", id);
+    printf("Units: ");
+    scanf("%f", units);
+}
+
+// Function to calculate the base bill
+float calculateBaseBill(float units) {
+    float baseBill;
+    
+    if (units <= 100) {
+        baseBill = 100 + (units * 5);
+    } else if (units <= 300) {
+        baseBill = 100 + (100 * 5) + ((units - 100) * 7);
+    } else {
+        baseBill = 100 + (100 * 5) + (200 * 7) + ((units - 300) * 10);
+    }
+    
+    return baseBill;
+}
+
+// Function to calculate the surcharge
+float calculateSurcharge(float baseBill) {
+    if (baseBill > 1000) {
+        return baseBill * 0.05; // 5% surcharge
+    }
+    
+    return 0; // No surcharge
+}
+
+// Function to display the bill details
+void displayBill(const char name[], int id, float units, float baseBill, float surcharge, float totalBill) {
+    printf("\nName: %s\nID: %d\nUnits: %.2f\nBase: %.2f\nSurcharge: %.2f\nTotal: %.2f\n",
+           name, id, units, baseBill, surcharge, totalBill);
+}
+
+
+
+
+int main() {
+    char name[50];
+    int id;
+    float units, baseBill, surcharge = 0, totalBill;
+
+    // Get customer details
+    getCustomerDetails(name, &id, &units);
+
+    // Calculate base bill
+    baseBill = calculateBaseBill(units);
+
+    // Calculate surcharge
+    surcharge = calculateSurcharge(baseBill);
+
+    // Calculate total bill
+    totalBill = baseBill + surcharge;
+
+    // Display the bill details
+    displayBill(name, id, units, baseBill, surcharge, totalBill);
+
+    return 0;
+}
