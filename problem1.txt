@@ -1,66 +1,82 @@
-#include<stdio.h>
-#include<string.h>
-int main()
-{
+#include <stdio.h>
+#include <string.h>
+
+// Function to read employee details
+void readEmployee(int* p_id, char* name, float* p_salary, int* p_attendance) {
+    printf("enter id:");
+    scanf("%d", p_id);
+
+    printf("enter name:");
+    scanf("%s", name); // Potential buffer overflow
+
+    printf("enter salary:");
+    scanf("%f", p_salary);
+
+    printf("enter the no of days worked:");
+    scanf("%d", p_attendance);
+}
+
+// Function to calculate bonus
+float calculateBonus(float salary, int attendance) {
+    float bonus = 0.0f;
+    if (attendance > 25) {
+        bonus = (salary / 100.0f) * 5.0f;  // Corrected bonus calculation
+    } else if (attendance < 10) {
+        bonus = -1.0f * ((salary / 100.0f) * 50.0f); // Corrected bonus calculation
+    }
+    return bonus; // Added return statement
+}
+
+// Function to categorize employee
+void categorizeEmployee(char* category, int attendance) {
+    if (attendance > 25) {
+        strcpy(category, "Excellent");
+    } else if (attendance < 15) {
+        strcpy(category, "Need Improvement");
+    } else {
+         strcpy(category, "Good"); // Added a default category
+    }
+}
+
+// Function to print payroll details
+void printPayroll(int id, char* name, float salary, float bonus, float gross_salary, char* category) {
+    printf("payroll details\n");
+    printf("\tID:%d\n", id);
+    printf("\tName:%s\n", name);
+    printf("\tbasic salary:%.2f\n", salary);
+    if (bonus > 0) {
+        printf("\tBonus:%.2f\n", bonus);
+    }
+    printf("\tfinal salary:%.2f\n", gross_salary);
+    printf("\temployee performance category:%s\n", category);
+    //return 0;  // Removed:  void functions don't return a value
+}
+
+int main() {
     int id;
     char name[255];
     float salary;
     int attendance;
-//read employee details----------------------
-    printf("enter id:");
-    scanf("%d",&id);
 
-    printf("enter name:");
-    scanf("%s",name);
+    // Read employee details
+    readEmployee(&id, name, &salary, &attendance);
 
-    printf("enter salary:");
-    scanf("%f",&salary);
-
-    printf("enter the no of days worked:");
-    scanf("%d",&attendance);
-
-//process payment roll--------------------------
-    
- 
+    // Process payroll
     float bonus = 0.0f;
-    float gross_salary= 0.0f;
-    char category[50]="Good     ";
+    float gross_salary = 0.0f;
+    char category[50] = "Good";  // Initialize to a default value
 
-    // calculate bonus----------------------------
+    // Calculate bonus
+    bonus = calculateBonus(salary, attendance);
 
-    if(attendance > 25)
-    {
-        bonus  = (bonus/100.0f) *5.0f;
-    }
-    else if (attendance < 10)
-    {
-        bonus = -1.0f*((bonus/100.0f)* 50.0f));
-    }
+    // Calculate final salary
+    gross_salary = salary + bonus;
 
-// FINAL SALARY 
-     gross_salary=(salary+bonus);    
+    // Categorize employee
+    categorizeEmployee(category, attendance);
 
-// categorize employee
-    if(attendance > 25)
-    {
-        strcpy(category,"Excellent");
-    }
-    else if (attendance < 15)
-    {
-        strcpy(category,"Need Improvement");
-     }
-     
+    // Display payroll details
+    printPayroll(id, name, salary, bonus, gross_salary, category);
 
-// display payroll details
-      printf("payroll details\n");
-      printf("\tID:%d\n",id);
-      printf("\tName:%s\n",name);
-      printf("\tbasic salary:%.2f\n",salary);
-      if (bonus > 0)
-      {
-        printf("Bonus:%.2f\n",bonus);
-      }
-      printf("\tfinal salary:%.2f\n",gross_salary);
-      printf("\temployee performance category:%s\n",category);
-     return 0;
+    return 0;
 }
