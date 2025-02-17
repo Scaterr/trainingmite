@@ -1,47 +1,84 @@
 #include <stdio.h>
 #include <string.h>
 
-int main() {
-    char vehicleType[10];
-    float distanceTraveled;
-    float baseCharge, totalTollTax, discount = 0;
-
-    // Input: Vehicle Type and Distance Traveled
+// Function to get vehicle type input
+void getVehicleType(char vehicleType[]) {
     printf("Enter Vehicle Type (Car/Truck/Bus): ");
     scanf("%s", vehicleType);
+}
+
+// Function to get distance traveled input
+float getDistanceTraveled() {
+    float distance;
     printf("Enter Distance Traveled (km): ");
-    scanf("%f", &distanceTraveled);
+    scanf("%f", &distance);
+    return distance;
+}
 
-    // Initialize base charge to 0
-    baseCharge = 0;
-
-    // Determine base charge based on vehicle type
+// Function to calculate the base charge
+float calculateBaseCharge(char vehicleType[], float distanceTraveled) {
     if (strcmp(vehicleType, "Car") == 0) {
-        baseCharge = 5.0 * distanceTraveled;  // ₹5 per km for Car
+        return 5.0 * distanceTraveled; // ₹5 per km for Car
     } else if (strcmp(vehicleType, "Truck") == 0) {
-        baseCharge = 10.0 * distanceTraveled; // ₹10 per km for Truck
-        if (distanceTraveled > 500) {
-            discount = 0.10 * baseCharge; // 10% discount for trucks over 500 km
-        }
+        return 10.0 * distanceTraveled; // ₹10 per km for Truck
     } else if (strcmp(vehicleType, "Bus") == 0) {
-        baseCharge = 8.0 * distanceTraveled; // ₹8 per km for Bus
-        if (distanceTraveled > 300) {
-            discount = 0.05 * baseCharge; // 5% discount for buses over 300 km
-        }
+        return 8.0 * distanceTraveled; // ₹8 per km for Bus
     } else {
-        printf("Invalid vehicle type. Please enter Car, Truck, or Bus.\n");
-        return 1; // Exit with error code
+        return -1.0; // Invalid vehicle type
     }
+}
 
-    // Calculate total toll tax
-    totalTollTax = baseCharge - discount;
+// Function to calculate the discount
+float calculateDiscount(char vehicleType[], float distanceTraveled, float baseCharge) {
+    if (strcmp(vehicleType, "Truck") == 0 && distanceTraveled > 500) {
+        return 0.10 * baseCharge; // 10% discount for trucks over 500 km
+    } else if (strcmp(vehicleType, "Bus") == 0 && distanceTraveled > 300) {
+        return 0.05 * baseCharge; // 5% discount for buses over 300 km
+    } else {
+        return 0.0; // No discount
+    }
+}
 
-    // Output results
+// Function to calculate the total toll tax
+float calculateTotalTollTax(float baseCharge, float discount) {
+    return baseCharge - discount;
+}
+
+// Function to display the results
+void displayResults(char vehicleType[], float distanceTraveled, float baseCharge, float discount, float totalTollTax) {
     printf("Vehicle Type: %s\n", vehicleType);
     printf("Distance Traveled: %.2f km\n", distanceTraveled);
     printf("Base Charge: ₹%.2f\n", baseCharge);
     printf("Discount: ₹%.2f\n", discount);
     printf("Total Toll Tax: ₹%.2f\n", totalTollTax);
+}
+
+int main() {
+    char vehicleType[10];
+    float distanceTraveled, baseCharge, discount, totalTollTax;
+
+    // Get vehicle type
+    getVehicleType(vehicleType);
+
+    // Get distance traveled
+    distanceTraveled = getDistanceTraveled();
+
+    // Calculate base charge
+    baseCharge = calculateBaseCharge(vehicleType, distanceTraveled);
+    if (baseCharge == -1.0) {
+        printf("Invalid vehicle type. Please enter Car, Truck, or Bus.\n");
+        return 1; // Exit with error code
+    }
+
+    // Calculate discount
+    discount = calculateDiscount(vehicleType, distanceTraveled, baseCharge);
+
+    // Calculate total toll tax
+    totalTollTax = calculateTotalTollTax(baseCharge, discount);
+
+    // Display results
+    displayResults(vehicleType, distanceTraveled, baseCharge, discount, totalTollTax);
 
     return 0; // Successful execution
 }
+
