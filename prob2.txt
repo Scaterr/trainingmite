@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char vehicleType[10];
+    float distanceTraveled;
+    float baseCharge, totalTollTax, discount = 0;
+
+    // Input: Vehicle Type and Distance Traveled
+    printf("Enter Vehicle Type (Car/Truck/Bus): ");
+    scanf("%s", vehicleType);
+    printf("Enter Distance Traveled (km): ");
+    scanf("%f", &distanceTraveled);
+
+    // Initialize base charge to 0
+    baseCharge = 0;
+
+    // Determine base charge based on vehicle type
+    if (strcmp(vehicleType, "Car") == 0) {
+        baseCharge = 5.0 * distanceTraveled;  // ₹5 per km for Car
+    } else if (strcmp(vehicleType, "Truck") == 0) {
+        baseCharge = 10.0 * distanceTraveled; // ₹10 per km for Truck
+        if (distanceTraveled > 500) {
+            discount = 0.10 * baseCharge; // 10% discount for trucks over 500 km
+        }
+    } else if (strcmp(vehicleType, "Bus") == 0) {
+        baseCharge = 8.0 * distanceTraveled; // ₹8 per km for Bus
+        if (distanceTraveled > 300) {
+            discount = 0.05 * baseCharge; // 5% discount for buses over 300 km
+        }
+    } else {
+        printf("Invalid vehicle type. Please enter Car, Truck, or Bus.\n");
+        return 1; // Exit with error code
+    }
+
+    // Calculate total toll tax
+    totalTollTax = baseCharge - discount;
+
+    // Output results
+    printf("Vehicle Type: %s\n", vehicleType);
+    printf("Distance Traveled: %.2f km\n", distanceTraveled);
+    printf("Base Charge: ₹%.2f\n", baseCharge);
+    printf("Discount: ₹%.2f\n", discount);
+    printf("Total Toll Tax: ₹%.2f\n", totalTollTax);
+
+    return 0; // Successful execution
+}
