@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+float calculateBill(char wardType, int days) {
+    float rate;
+    
+    // Determine the charge per day based on ward type
+    if (wardType == 'G') {
+        rate = 1000.0; // General Ward
+    } else if (wardType == 'S') {
+        rate = 2000.0; // Semi-Private
+    } else if (wardType == 'P') {
+        rate = 5000.0; // Private
+    } else {
+        printf("Invalid ward type entered.\n");
+        return 0.0; // Return 0 for invalid input
+    }
+
+    // Calculate total bill before discount
+    float totalBill = rate * days;
+
+    // Apply discount if applicable
+    if (days > 7) {
+        totalBill *= 0.95; // Apply 5% discount
+    }
+
+    return totalBill;
+}
+
+int main() {
+    char patientName[50];
+    char wardType;
+    int days;
+
+    // Input patient details
+    printf("Enter Patient Name: ");
+    fgets(patientName, sizeof(patientName), stdin);
+    
+    printf("Enter Ward Type (G/S/P): ");
+    scanf(" %c", &wardType);
+    
+    printf("Enter Number of Days: ");
+    scanf("%d", &days);
+
+    // Calculate bill
+    float finalBill = calculateBill(wardType, days);
+    
+    // Output results
+    printf("\nPatient Name: %s", patientName);
+    
+    // Calculate total bill before discount for display purpose
+    float originalBill = (wardType == 'G' ? 1000 : (wardType == 'S' ? 2000 : 5000)) * days;
+    
+    printf("Total Bill Before Discount: ₹%.2f\n", originalBill);
+    
+    if (days > 7) {
+        printf("Discount Applied: ₹%.2f\n", originalBill * 0.05);
+    } else {
+        printf("No Discount Applied.\n");
+    }
+    
+    printf("Final Bill Amount: ₹%.2f\n", finalBill);
+
+    return 0;
+}
